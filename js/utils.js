@@ -17,12 +17,12 @@ const debounce = (callback, timeoutDelay = 500) => {
     // Таким образом цикл "поставить таймаут - удалить таймаут" будет выполняться,
     // пока действие совершается чаще, чем переданная задержка timeoutDelay
   };
-}
+};
 
 // Функция взята из интернета и доработана
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 
-const getRandomPositiveInteger = (a, b) => {
+const getRandomPositiveInteger = (first, second) => {
   // Чтобы не заставлять пользователя нашей функции помнить порядок аргументов,
   // реализуем поддержку передачи минимального и максимального значения в любом порядке,
   // а какое из них большее и меньшее вычислим с помощью Math.min и Math.max.
@@ -31,8 +31,8 @@ const getRandomPositiveInteger = (a, b) => {
   // для этого на всякий пожарный случай нижнюю границу диапазона
   // мы округляем к ближайшему большему целому с помощью Math.ceil,
   // а верхнюю границу - к ближайшему меньшему целому с помощью Math.floor
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const lower = Math.ceil(Math.min(Math.abs(first), Math.abs(second)));
+  const upper = Math.floor(Math.max(Math.abs(first), Math.abs(second)));
   // Обратите внимание, чтобы учесть условие, что диапазон может быть [0, ∞),
   // мы не ругаем пользователя за переданное отрицательное число,
   // а просто берём его по модулю с помощью Math.abs
@@ -60,21 +60,24 @@ const throttle = (callback, delayBetweenFrames) => {
     // Получаем текущую дату в миллисекундах,
     // чтобы можно было в дальнейшем
     // вычислять разницу между кадрами
-    let now = new Date();
+    const now = new Date();
 
     // Если время между кадрами больше задержки,
     // вызываем наш колбэк и перезаписываем lastTime
     // временем "последнего кадра"
     if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest)
+      callback.apply(this, rest);
       lastTime = now;
     }
   };
-}
-
-
-const checkStringLength = (string, length) => {
-  return string.length <= length;
 };
 
 
+const checkStringLength = (string, length) => string.length <= length;
+
+export {
+  debounce,
+  throttle,
+  checkStringLength,
+  getRandomPositiveInteger
+};
