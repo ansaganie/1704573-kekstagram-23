@@ -11,9 +11,9 @@ const picturesContainer = document.querySelector('.pictures');
 const onPictureClick = (evt) => {
   evt.preventDefault();
   const src = evt.target.getAttribute('src');
-  const current = picturesJson.find(({url}) => url === src);
-
-  showBigPicture(current);
+  if (src) {
+    showBigPicture(picturesJson.find(({url}) => url === src));
+  }
 };
 
 const clearPicturesContainer = () => {
@@ -43,13 +43,11 @@ const drawPictures = (pictures, filterType) => {
       newPicture.querySelector('.picture__comments').textContent =
         picture.comments.length;
       newPicture.querySelector('.picture__likes').textContent = picture.likes;
-
+      newPicture.addEventListener('click', onPictureClick);
       fragment.append(newPicture);
     });
 
   picturesContainer.appendChild(fragment);
 };
-
-picturesContainer.addEventListener('click', onPictureClick);
 
 export { drawPictures };
