@@ -1,3 +1,4 @@
+import { drawPictures } from './pictures/pictures.js';
 
 const MAIN_LINK = 'https://23.javascript.pages.academy/kekstagram';
 
@@ -6,10 +7,13 @@ const api = {
   post : '',
 };
 
-let pictures;
+let picturesJson;
 
 fetch(MAIN_LINK + api.get)
   .then((response) => response.json())
-  .then((data) => pictures = data);
+  .then((data) => {
+    picturesJson = data;
+    drawPictures(picturesJson);
+  });
 
-export { pictures };
+export { picturesJson };
