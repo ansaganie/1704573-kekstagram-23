@@ -13,7 +13,7 @@ fetch(MAIN_LINK + api.get)
   .then((response) => response.json())
   .then((data) => {
     picturesJson = data;
-    drawPictures(picturesJson);
+    drawPictures(picturesJson, 'filter-default');
   });
 
 export { picturesJson };

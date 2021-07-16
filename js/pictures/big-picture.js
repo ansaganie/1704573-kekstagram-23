@@ -60,6 +60,7 @@ const showComments = (comments) => {
 
   const commentsCount = bigPicture.querySelector('.comments-count');
   const commentsCountShown = bigPicture.querySelector('.comments-count__shown');
+
   const updateCommentCount = () => {
     if (comments.length <= to) {
       commentsCountShown.textContent = comments.length;
