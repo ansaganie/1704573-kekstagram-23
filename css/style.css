@@ -125,7 +125,7 @@ main {
 
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex;
+  display: grid;
 
   -webkit-box-pack: center;
      -ms-flex-pack: center;
@@ -181,6 +181,9 @@ main {
   border-radius: 2px;
 }
 
+.img-filters__title {
+  text-align: center;
+}
 
 /* Блок, в котором размещаются фотографии других пользователей
    ========================================================================== */
