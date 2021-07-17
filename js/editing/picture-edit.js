@@ -39,4 +39,4 @@ const editImage = (url) => {
   imgPreview.src = url;
 };
 
-export { editImage, overlay };
+export { editImage, overlay, imgPreview };
