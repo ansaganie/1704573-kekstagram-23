@@ -29,8 +29,12 @@ const showImgUploadTitle = () => {
     .classList.remove('visually-hidden');
 };
 
+const clearUploadFile = () => {
+  uploadFile.value = '';
+};
+
 uploadFile.addEventListener('change', onUploadFileChange);
 
 imgUpload.addEventListener('click', (evt) => evt.stopPropagation());
 
-export { showImgUploadTitle };
+export { showImgUploadTitle, clearUploadFile };
