@@ -1,4 +1,5 @@
 import { isEscapePressed } from '../utils.js';
+import { clearEffect } from './effects.js';
 import { clearUploadFile } from './pictures-upload.js';
 
 const overlay = document.querySelector('.img-upload__overlay');
@@ -12,7 +13,9 @@ const closeImgEditModal = () => {
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   imgPreview.src = '';
+  imgPreview.style.transform = 'scale(1)';
   clearUploadFile();
+  clearEffect();
 };
 
 const onEscapeKeydown = (evt) => {
@@ -30,7 +33,7 @@ const showImgEditModal = () => {
   overlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  cancel.addEventListener('click', onCancelClick, { once: true});
+  cancel.addEventListener('click', onCancelClick, { once: true });
   document.addEventListener('keydown', onEscapeKeydown);
 };
 

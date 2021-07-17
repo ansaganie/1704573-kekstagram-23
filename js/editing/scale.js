@@ -8,21 +8,21 @@ const bigger = document.querySelector('.scale__control--bigger');
 const smaller = document.querySelector('.scale__control--smaller');
 const value = document.querySelector('.scale__control--value');
 
-let currentValue = 100;
-
 const onBiggerClick = () => {
+  let currentValue = parseInt(value.value.slice(0, value.value.length-1), 10);
   if (currentValue !== SCALE_MAX) {
     currentValue += SCALE_STEP;
     value.value = `${currentValue}%`;
-    imgPreview.style.transform = `scale(${currentValue/SCALE_MAX})`;
+    imgPreview.style.transform = `scale(${currentValue / SCALE_MAX})`;
   }
 };
 
 const onSmallerClick = () => {
+  let currentValue = parseInt(value.value.slice(0, value.value.length-1), 10);
   if (currentValue !== SCALE_MIN) {
     currentValue -= SCALE_STEP;
     value.value = `${currentValue}%`;
-    imgPreview.style.transform = `scale(${currentValue/SCALE_MAX})`;
+    imgPreview.style.transform = `scale(${currentValue / SCALE_MAX})`;
   }
 };
 

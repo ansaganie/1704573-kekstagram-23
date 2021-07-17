@@ -1,5 +1,6 @@
-import { overlay, imgPreview } from './picture-edit.js';
+import { imgPreview } from './picture-edit.js';
 
+const overlay = document.querySelector('.img-upload__overlay');
 const effects = overlay.querySelector('.img-upload__effects');
 const slider = overlay.querySelector('.effect-level__slider');
 const effectLevel = overlay.querySelector('.img-upload__effect-level');
@@ -40,21 +41,22 @@ const effectsDictionary = {
     step: 1,
     unit: '%',
   },
-  'effect-none': {
-    name: 'none',
-  },
 };
 
 const applyEffect = (filterName, intensity, unit) => {
   imgPreview.style.filter = `${filterName}(${intensity}${unit})`;
 };
 
+const clearEffect = () => {
+  imgPreview.style.filter = 'none';
+  effectLevel.classList.add('visually-hidden');
+};
+
 const onEffectsChange = (evt) => {
   const id = evt.target.id;
   if (id) {
     if (id === 'effect-none') {
-      effectLevel.classList.add('visually-hidden');
-      imgPreview.style.filter = effectsDictionary[id].name;
+      clearEffect();
     } else {
       effectLevel.classList.remove('visually-hidden');
 
@@ -90,3 +92,5 @@ noUiSlider.create(slider, {
 });
 
 effects.addEventListener('change', onEffectsChange);
+
+export { clearEffect };
