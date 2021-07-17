@@ -1,3 +1,5 @@
+import { isEscapePressed } from '../utils.js';
+
 const socialComment = document
   .querySelector('.social__comment')
   .cloneNode(true);
@@ -12,7 +14,7 @@ const hideModal = () => {
 };
 
 const onEscKeydown = (evt) => {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
+  if (isEscapePressed(evt)) {
     evt.preventDefault();
     hideModal();
   }
@@ -33,10 +35,9 @@ const showModal = () => {
 
   bigPicture
     .querySelector('.big-picture__cancel')
-    .addEventListener('click', onCloseButtonClick, {once: true});
+    .addEventListener('click', onCloseButtonClick, { once: true });
 
-  bigPicture
-    .addEventListener('click', onCloseButtonClick, {once: true});
+  bigPicture.addEventListener('click', onCloseButtonClick, { once: true });
 
   bigPicture
     .querySelector('.big-picture__preview')

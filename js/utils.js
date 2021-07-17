@@ -72,12 +72,14 @@ const throttle = (callback, delayBetweenFrames) => {
   };
 };
 
-
 const checkStringLength = (string, length) => string.length <= length;
+
+const isEscapePressed = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 export {
   debounce,
   throttle,
   checkStringLength,
-  getRandomPositiveInteger
+  getRandomPositiveInteger,
+  isEscapePressed
 };
