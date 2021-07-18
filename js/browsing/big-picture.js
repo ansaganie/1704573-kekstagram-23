@@ -1,4 +1,13 @@
 import { isEscapePressed } from '../utils.js';
+import { drawPictures } from './pictures.js';
+import { picturesJson } from '../api.js';
+
+const comment = {
+  id: 100000,
+  avatar: 'img/avatar-6.svg',
+  name: 'Степан',
+  message: '',
+};
 
 const socialComment = document
   .querySelector('.social__comment')
@@ -10,6 +19,7 @@ const hideModal = () => {
   bigPicture
     .querySelector('.big-picture__title')
     .classList.add('visually-hidden');
+  drawPictures(picturesJson, 'filter-default');
   document.body.classList.remove('modal-open');
 };
 
@@ -63,6 +73,8 @@ const createComments = (comments) => {
 const showComments = (comments) => {
   const socialComments = bigPicture.querySelector('.social__comments');
   const loader = bigPicture.querySelector('.social__comments-loader');
+  const footerButton = bigPicture.querySelector('.social__footer-btn');
+  const footerText = bigPicture.querySelector('.social__footer-text');
 
   socialComments.innerHTML = '';
   let to = 5;
@@ -88,7 +100,17 @@ const showComments = (comments) => {
     updateCommentCount();
   };
 
+  const onFooterButtonClick = (evt) => {
+    comment.id++;
+    const newComment = {...comment};
+    newComment.message = footerText.value;
+    comments.push(newComment);
+    onLoaderClick(evt);
+    footerText.value = '';
+  };
+
   loader.addEventListener('click', onLoaderClick);
+  footerButton.onclick = onFooterButtonClick;
 
   updateCommentCount();
   socialComments.appendChild(createComments(comments.slice(0, to)));
