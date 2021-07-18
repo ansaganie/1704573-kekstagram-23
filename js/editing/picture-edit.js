@@ -8,6 +8,7 @@ const imgPreview = overlay
   .querySelector('img');
 
 const cancel = overlay.querySelector('.img-upload__cancel');
+const wrapper = overlay.querySelector('.img-upload__wrapper');
 
 const closeImgEditModal = () => {
   overlay.classList.add('hidden');
@@ -21,6 +22,7 @@ const closeImgEditModal = () => {
 const onEscapeKeydown = (evt) => {
   if (isEscapePressed(evt)) {
     closeImgEditModal();
+    document.removeEventListener('keydown', onEscapeKeydown);
   }
 };
 
@@ -29,11 +31,19 @@ const onCancelClick = () => {
   document.removeEventListener('keydown', onEscapeKeydown);
 };
 
+const onOverlayClick = () => {
+  closeImgEditModal();
+  document.removeEventListener('keydown', onEscapeKeydown);
+  cancel.removeEventListener('click', onCancelClick, { once: true });
+};
+
 const showImgEditModal = () => {
   overlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
   cancel.addEventListener('click', onCancelClick, { once: true });
+  overlay.addEventListener('click', onOverlayClick, { once: true});
+  wrapper.addEventListener('click', (evt) => evt.stopPropagation());
   document.addEventListener('keydown', onEscapeKeydown);
 };
 
