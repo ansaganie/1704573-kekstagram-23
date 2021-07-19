@@ -7,6 +7,7 @@ const imgPreview = overlay
   .querySelector('.img-upload__preview')
   .querySelector('img');
 
+const form = overlay.querySelector('.img-upload__form');
 const cancel = overlay.querySelector('.img-upload__cancel');
 const wrapper = overlay.querySelector('.img-upload__wrapper');
 
@@ -17,6 +18,7 @@ const closeImgEditModal = () => {
   imgPreview.style.transform = 'scale(1)';
   clearUploadFile();
   clearEffect();
+  form.reset();
 };
 
 const onEscapeKeydown = (evt) => {
@@ -52,4 +54,10 @@ const editImage = (url) => {
   imgPreview.src = url;
 };
 
-export { editImage, overlay, imgPreview };
+export {
+  editImage,
+  onEscapeKeydown,
+  closeImgEditModal,
+  overlay,
+  imgPreview
+};
