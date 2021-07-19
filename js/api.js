@@ -1,4 +1,5 @@
 import { drawPictures } from './browsing/pictures.js';
+import { closeImgEditModal } from './editing/picture-edit.js';
 import { showImgUploadTitle } from './editing/pictures-upload.js';
 
 const MAIN_LINK = 'https://23.javascript.pages.academy/kekstagram';
@@ -18,4 +19,23 @@ fetch(MAIN_LINK + api.get)
     showImgUploadTitle();
   });
 
-export { picturesJson };
+const sendForm = (formData, showSuccessMessage, showErrorMessage) => {
+  fetch(
+    MAIN_LINK + api.get,
+    {
+      method: 'POST',
+      credentials: 'same-origin',
+      body: formData,
+    },
+  ).then((response) => {
+    if (response.ok) {
+      showSuccessMessage();
+      closeImgEditModal();
+    } else {
+      showErrorMessage();
+    }
+  });
+};
+
+
+export { picturesJson, sendForm };
