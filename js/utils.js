@@ -76,10 +76,13 @@ const checkStringLength = (string, length) => string.length <= length;
 
 const isEscapePressed = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
+const hasDuplicateElements = (array) => new Set(array).size !== array.length;
+
 export {
   debounce,
   throttle,
   checkStringLength,
   getRandomPositiveInteger,
-  isEscapePressed
+  isEscapePressed,
+  hasDuplicateElements
 };
