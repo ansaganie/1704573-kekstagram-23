@@ -7,9 +7,9 @@ const imgPreview = overlay
   .querySelector('.img-upload__preview')
   .querySelector('img');
 
-const form = overlay.querySelector('.img-upload__form');
-const cancel = overlay.querySelector('.img-upload__cancel');
-const wrapper = overlay.querySelector('.img-upload__wrapper');
+const uploadForm = document.querySelector('.img-upload__form');
+const cancelButton = overlay.querySelector('.img-upload__cancel');
+const wrapperNode = overlay.querySelector('.img-upload__wrapper');
 
 const closeImgEditModal = () => {
   overlay.classList.add('hidden');
@@ -18,7 +18,7 @@ const closeImgEditModal = () => {
   imgPreview.style.transform = 'scale(1)';
   clearUploadFile();
   clearEffect();
-  form.reset();
+  uploadForm.reset();
 };
 
 const onEscapeKeydown = (evt) => {
@@ -36,16 +36,16 @@ const onCancelClick = () => {
 const onOverlayClick = () => {
   closeImgEditModal();
   document.removeEventListener('keydown', onEscapeKeydown);
-  cancel.removeEventListener('click', onCancelClick, { once: true });
+  cancelButton.removeEventListener('click', onCancelClick, { once: true });
 };
 
 const showImgEditModal = () => {
   overlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  cancel.addEventListener('click', onCancelClick, { once: true });
+  cancelButton.addEventListener('click', onCancelClick, { once: true });
   overlay.addEventListener('click', onOverlayClick, { once: true});
-  wrapper.addEventListener('click', (evt) => evt.stopPropagation());
+  wrapperNode.addEventListener('click', (evt) => evt.stopPropagation());
   document.addEventListener('keydown', onEscapeKeydown);
 };
 

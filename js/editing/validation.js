@@ -1,14 +1,14 @@
 import { onEscapeKeydown } from './picture-edit.js';
-import { hasDuplicateElements } from '../utils.js';
+import { debounce, hasDuplicateElements } from '../utils.js';
 import { sendForm } from '../api.js';
 
 const HASHTAG_MAX_LENGTH = 20;
 const HASHTAG_MAX_COUNT = 5;
-const HASHTAG_PATTERN = /^#[a-z0-9]{1,19}$/;
+const HASHTAG_PATTERN = /^#[a-zа-я0-9]{1,19}$/;
 
-const form = document.querySelector('.img-upload__form');
-const hashtags = form.querySelector('.text__hashtags');
-const description = form.querySelector('.text__description');
+const uploadForm = document.querySelector('.img-upload__form');
+const hashtagsInput = uploadForm.querySelector('.text__hashtags');
+const descriptionInput = uploadForm.querySelector('.text__description');
 
 const onHashtagsOrDescriptionFocus = () => {
   document.removeEventListener('keydown', onEscapeKeydown);
@@ -52,6 +52,7 @@ const isDescriptionValid = (input) => {
   if (input.length > 140) {
     return 'длина комментария не может составлять больше 140 символов';
   }
+
   return 'valid';
 };
 
@@ -59,42 +60,54 @@ const validateInput = (element, message) => {
   if (message !== 'valid') {
     element.setCustomValidity(message);
     element.reportValidity();
+
     return false;
   } else {
     element.setCustomValidity('');
     element.reportValidity();
+
     return true;
   }
 };
 
 const validateHashtags = () => {
-  if (hashtags.value.length === 0) {
-    return validateInput(hashtags, 'valid');
+  if (hashtagsInput.value.length === 0) {
+    return validateInput(hashtagsInput, 'valid');
   }
 
-  const hashtagsSpilted = hashtags.value
+  const hashtagsSpilted = hashtagsInput.value
     .toLowerCase()
     .replace(/\s+/g, ' ')
     .trim()
     .split(' ');
-  return validateInput(hashtags, isHashtagsValid(hashtagsSpilted));
+  return validateInput(hashtagsInput, isHashtagsValid(hashtagsSpilted));
 };
 
 const validateDescription = () =>
-  validateInput(description, isDescriptionValid(description.value));
+  validateInput(descriptionInput, isDescriptionValid(descriptionInput.value));
 
 const onFormSubmit = (evt) => {
+  evt.preventDefault();
   const validHashtags = validateHashtags();
   const validDescription = validateDescription();
 
   if (validHashtags && validDescription) {
-    sendForm(new FormData());
+    sendForm(new FormData(uploadForm));
   }
-  evt.preventDefault();
 };
 
-hashtags.addEventListener('focus', onHashtagsOrDescriptionFocus);
-hashtags.addEventListener('blur', onHashtagsOrDescriptionBlur);
-description.addEventListener('focus', onHashtagsOrDescriptionFocus);
-description.addEventListener('blur', onHashtagsOrDescriptionBlur);
-form.addEventListener('submit', onFormSubmit);
+const onHashtagsInput = () => {
+  validateHashtags();
+};
+
+const onDescriptionInput = () => {
+  validateDescription();
+};
+
+hashtagsInput.addEventListener('focus', onHashtagsOrDescriptionFocus);
+hashtagsInput.addEventListener('blur', onHashtagsOrDescriptionBlur);
+descriptionInput.addEventListener('focus', onHashtagsOrDescriptionFocus);
+descriptionInput.addEventListener('blur', onHashtagsOrDescriptionBlur);
+uploadForm.addEventListener('submit', onFormSubmit);
+hashtagsInput.addEventListener('input', debounce(onHashtagsInput));
+descriptionInput.addEventListener('input', debounce(onDescriptionInput));
