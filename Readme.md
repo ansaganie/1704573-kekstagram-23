@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Ansagan Islamgali](https://up.htmlacademy.ru/javascript/23/user/1704573).
-* Наставник: `Неизвестно`.
+* Студент: [Ansagan Islamgali](https://htmlacademy.ru/profile/id1704573).
+* Наставник: [Артём Рудов](https://htmlacademy.ru/profile/artrudov).
 
 ---
 
