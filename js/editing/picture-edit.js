@@ -1,24 +1,25 @@
 import { isEscapePressed } from '../utils.js';
 import { clearEffect } from './effects.js';
+import { clearValidationMessages } from './form.js';
 import { clearUploadFile } from './pictures-upload.js';
 
-const overlay = document.querySelector('.img-upload__overlay');
-const imgPreview = overlay
+const overlayNode = document.querySelector('.img-upload__overlay');
+const imgPreviewNode = overlayNode
   .querySelector('.img-upload__preview')
   .querySelector('img');
 
-const uploadForm = document.querySelector('.img-upload__form');
-const cancelButton = overlay.querySelector('.img-upload__cancel');
-const wrapperNode = overlay.querySelector('.img-upload__wrapper');
+const uploadFormNode = document.querySelector('.img-upload__form');
+const cancelButtonNode = overlayNode.querySelector('.img-upload__cancel');
 
 const closeImgEditModal = () => {
-  overlay.classList.add('hidden');
+  overlayNode.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  imgPreview.src = '';
-  imgPreview.style.transform = 'scale(1)';
+  imgPreviewNode.src = '';
+  imgPreviewNode.style.transform = 'scale(1)';
   clearUploadFile();
   clearEffect();
-  uploadForm.reset();
+  clearValidationMessages();
+  uploadFormNode.reset();
 };
 
 const onEscapeKeydown = (evt) => {
@@ -33,31 +34,24 @@ const onCancelClick = () => {
   document.removeEventListener('keydown', onEscapeKeydown);
 };
 
-const onOverlayClick = () => {
-  closeImgEditModal();
-  document.removeEventListener('keydown', onEscapeKeydown);
-  cancelButton.removeEventListener('click', onCancelClick, { once: true });
-};
-
 const showImgEditModal = () => {
-  overlay.classList.remove('hidden');
+  overlayNode.classList.remove('hidden');
   document.body.classList.add('modal-open');
 
-  cancelButton.addEventListener('click', onCancelClick, { once: true });
-  overlay.addEventListener('click', onOverlayClick, { once: true});
-  wrapperNode.addEventListener('click', (evt) => evt.stopPropagation());
   document.addEventListener('keydown', onEscapeKeydown);
 };
 
 const editImage = (url) => {
   showImgEditModal();
-  imgPreview.src = url;
+  imgPreviewNode.src = url;
 };
+
+cancelButtonNode.addEventListener('click', onCancelClick);
 
 export {
   editImage,
   onEscapeKeydown,
   closeImgEditModal,
-  overlay,
-  imgPreview
+  overlayNode as overlay,
+  imgPreviewNode as imgPreview
 };
