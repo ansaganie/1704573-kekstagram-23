@@ -21,7 +21,7 @@ fetch(MAIN_LINK + api.get)
 
 const sendForm = (formData, showSuccessMessage, showErrorMessage) => {
   fetch(
-    MAIN_LINK + api.get,
+    MAIN_LINK + api.post,
     {
       method: 'POST',
       credentials: 'same-origin',
