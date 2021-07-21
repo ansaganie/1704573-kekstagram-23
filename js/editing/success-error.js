@@ -3,49 +3,49 @@ import { isEscapePressed, destroyElement } from '../utils.js';
 const EVENT_HANDLER_OPTIONS = { once: true };
 
 const showSuccessMessage = () => {
-  const successSection = document
+  const successNode = document
     .querySelector('#success')
     .content.querySelector('.success')
     .cloneNode(true);
 
-  document.body.appendChild(successSection);
+  document.body.appendChild(successNode);
 
   const onEscapeKeydown = (evt) => {
     if (isEscapePressed(evt)) {
-      destroyElement(successSection);
+      destroyElement(successNode);
     }
   };
 
   const onSuccessSectionClick = () => {
-    destroyElement(successSection);
+    destroyElement(successNode);
     document.removeEventListener('keydown', onEscapeKeydown);
   };
 
   document.addEventListener('keydown', onEscapeKeydown);
-  successSection.addEventListener('click', onSuccessSectionClick);
+  successNode.addEventListener('click', onSuccessSectionClick);
 };
 
 const showErrorMessage = () => {
-  const errorSection = document
+  const errorNode = document
     .querySelector('#error')
     .content.querySelector('.error')
     .cloneNode(true);
 
-  document.body.appendChild(errorSection);
+  document.body.appendChild(errorNode);
 
   const onEscapeKeydown = (evt) => {
     if (isEscapePressed(evt)) {
-      destroyElement(errorSection);
+      destroyElement(errorNode);
     }
   };
 
   const onErrorSectionClick = () => {
-    destroyElement(errorSection);
+    destroyElement(errorNode);
     document.removeEventListener('keydown', onEscapeKeydown);
   };
 
   document.addEventListener('keydown', onEscapeKeydown);
-  errorSection.addEventListener(
+  errorNode.addEventListener(
     'click',
     onErrorSectionClick,
     EVENT_HANDLER_OPTIONS,
@@ -53,18 +53,18 @@ const showErrorMessage = () => {
 };
 
 const showLoadingMessage = () => {
-  const messageLoading = document
+  const messageLoadingNode = document
     .querySelector('#messages').content
     .querySelector('.img-upload__message--loading')
     .cloneNode(true);
-  document.body.appendChild(messageLoading);
+  document.body.appendChild(messageLoadingNode);
 };
 
 const hideLoadingMessage = () => {
-  const messageLoading = document
+  const messageLoadingNode = document
     .querySelector('.img-upload__message--loading');
-  if (messageLoading) {
-    messageLoading.parentElement.removeChild(messageLoading);
+  if (messageLoadingNode) {
+    messageLoadingNode.parentElement.removeChild(messageLoadingNode);
   }
 };
 

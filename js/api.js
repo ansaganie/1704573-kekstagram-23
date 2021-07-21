@@ -10,13 +10,13 @@ const api = {
   post: '',
 };
 
-let picturesJson;
+let pictures;
 
 fetch(MAIN_LINK + api.get)
   .then((response) => response.json())
   .then((data) => {
-    picturesJson = data;
-    drawPictures(picturesJson, 'filter-default');
+    pictures = data;
+    drawPictures(pictures, 'filter-default');
     showImgUploadTitle();
   })
   .catch(() => {
@@ -55,4 +55,4 @@ const sendForm = (
     });
 };
 
-export { picturesJson, sendForm };
+export { pictures, sendForm };

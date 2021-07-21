@@ -1,40 +1,40 @@
 import { showBigPicture } from './big-picture.js';
-import { picturesJson } from '../api.js';
+import { pictures } from '../api.js';
 import { doFilter, showFilters } from './filter.js';
 
 const pictureTemplate = document
   .querySelector('#picture')
   .content.querySelector('.picture');
 
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainerNode = document.querySelector('.pictures');
 
 const onPictureClick = (evt) => {
   evt.preventDefault();
   const src = evt.target.getAttribute('src');
 
   if (src) {
-    showBigPicture(picturesJson.find(({url}) => url === src));
+    showBigPicture(pictures.find(({url}) => url === src));
   }
 };
 
 const clearPicturesContainer = () => {
-  const imgUpload = picturesContainer.querySelector('.img-upload');
-  const picturesTitle = picturesContainer.querySelector('.pictures__title');
+  const imgUpload = picturesContainerNode.querySelector('.img-upload');
+  const picturesTitle = picturesContainerNode.querySelector('.pictures__title');
 
-  picturesContainer.innerHTML = '';
-  picturesContainer.appendChild(imgUpload);
-  picturesContainer.appendChild(picturesTitle);
+  picturesContainerNode.innerHTML = '';
+  picturesContainerNode.appendChild(imgUpload);
+  picturesContainerNode.appendChild(picturesTitle);
 };
 
-const drawPictures = (pictures, filterType) => {
+const drawPictures = (picturesArr, filterType) => {
   const fragment = document.createDocumentFragment();
   clearPicturesContainer();
-  picturesContainer
+  picturesContainerNode
     .querySelector('.pictures__title')
     .classList.remove('visually-hidden');
 
   showFilters();
-  doFilter[filterType](pictures)
+  doFilter[filterType](picturesArr)
     .forEach((picture) => {
       const newPicture = pictureTemplate.cloneNode(true);
       newPicture.querySelector('.picture__img').src = picture.url;
@@ -46,9 +46,9 @@ const drawPictures = (pictures, filterType) => {
       fragment.append(newPicture);
     });
 
-  picturesContainer.appendChild(fragment);
+  picturesContainerNode.appendChild(fragment);
 };
 
-picturesContainer.addEventListener('click', onPictureClick);
+picturesContainerNode.addEventListener('click', onPictureClick);
 
 export { drawPictures };

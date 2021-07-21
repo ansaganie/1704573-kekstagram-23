@@ -1,8 +1,8 @@
 import { editImage } from './picture-edit.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-const imgUpload = document.querySelector('.img-upload');
-const uploadFile = document.querySelector('#upload-file');
+const imgUploadNode = document.querySelector('.img-upload');
+const uploadFileNode = document.querySelector('#upload-file');
 
 const onUploadFileChange = (evt) => {
   evt.preventDefault();
@@ -24,17 +24,17 @@ const onUploadFileChange = (evt) => {
 };
 
 const showImgUploadTitle = () => {
-  imgUpload
+  imgUploadNode
     .querySelector('.img-upload__title')
     .classList.remove('visually-hidden');
 };
 
 const clearUploadFile = () => {
-  uploadFile.value = '';
+  uploadFileNode.value = '';
 };
 
-uploadFile.addEventListener('change', onUploadFileChange);
+uploadFileNode.addEventListener('change', onUploadFileChange);
 
-imgUpload.addEventListener('click', (evt) => evt.stopPropagation());
+imgUploadNode.addEventListener('click', (evt) => evt.stopPropagation());
 
 export { showImgUploadTitle, clearUploadFile };

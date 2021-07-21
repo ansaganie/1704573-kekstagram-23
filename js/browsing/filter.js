@@ -1,12 +1,12 @@
-import { picturesJson } from '../api.js';
-import { getRandomPositiveInteger } from '../utils.js';
+import { pictures } from '../api.js';
+import { debounce, getRandomPositiveInteger } from '../utils.js';
 import { drawPictures } from './pictures.js';
 
-const filters = document.querySelector('.img-filters');
+const filtersNode = document.querySelector('.img-filters');
 
 const showFilters = () => {
-  filters.classList.remove('img-filters--inactive');
-  filters
+  filtersNode.classList.remove('img-filters--inactive');
+  filtersNode
     .querySelector('.img-filters__title')
     .classList.remove('visually-hidden');
 };
@@ -15,25 +15,25 @@ const onFilterClick = (evt) => {
   evt.preventDefault();
 
   const current = evt.target;
-  if (current.id) {
+  const filterName = current.id;
+  if (filterName) {
     current.parentNode.childNodes.forEach((child) => {
       if (child.classList) {
         child.classList.remove('img-filters__button--active');
       }
     });
     current.classList.add('img-filters__button--active');
-
-    drawPictures(picturesJson, current.id);
+    debounce(drawPictures.bind(null, pictures, filterName), 500)();
   }
 };
 
 const doFilter = {
-  'filter-default' : (pictures) => pictures,
-  'filter-random' : (pictures) => {
+  'filter-default' : (picturesArr) => picturesArr,
+  'filter-random' : (picturesArr) => {
     const result = [];
 
     while (result.length < 10) {
-      const randomPicture = pictures[getRandomPositiveInteger(0, pictures.length - 1)];
+      const randomPicture = picturesArr[getRandomPositiveInteger(0, picturesArr.length - 1)];
       if (!result.includes(randomPicture)) {
         result.push(randomPicture);
       }
@@ -41,8 +41,8 @@ const doFilter = {
 
     return result;
   },
-  'filter-discussed' : (pictures) => {
-    const sorted = pictures
+  'filter-discussed' : (picturesArr) => {
+    const sorted = picturesArr
       .slice()
       .sort((first, second) =>
         second.comments.length - first.comments.length);
@@ -50,6 +50,6 @@ const doFilter = {
   },
 };
 
-filters.addEventListener('click', onFilterClick);
+filtersNode.addEventListener('click', onFilterClick);
 
 export { showFilters, doFilter };

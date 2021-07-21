@@ -1,24 +1,24 @@
 import { destroyElement } from './utils.js';
 
 const showDangerAlert = (message) => {
-  const alertDanger = document
+  const alertDangerNode = document
     .querySelector('#alert-danger')
     .content.querySelector('.alert-danger')
     .cloneNode(true);
-  alertDanger.querySelector('.alert-danger__text').textContent = message;
+  alertDangerNode.querySelector('.alert-danger__text').textContent = message;
   const onCloseButtonClick = (evt) => {
     evt.preventDefault();
-    destroyElement(alertDanger);
+    destroyElement(alertDangerNode);
   };
 
-  const alertDangerCloseButton = alertDanger.querySelector(
+  const alertDangerCloseButton = alertDangerNode.querySelector(
     '.alert-danger__close-button',
   );
   alertDangerCloseButton.addEventListener('click', onCloseButtonClick, {
     once: true,
   });
 
-  document.body.appendChild(alertDanger);
+  document.body.appendChild(alertDangerNode);
 };
 
 export { showDangerAlert };
