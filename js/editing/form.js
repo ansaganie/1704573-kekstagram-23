@@ -12,15 +12,22 @@ const HASHTAG_MAX_LENGTH = 20;
 const HASHTAG_MAX_COUNT = 5;
 const HASHTAG_PATTERN = /^#[a-zа-я0-9]{1,19}$/;
 
-const uploadForm = document.querySelector('.img-upload__form');
-const hashtagsInput = uploadForm.querySelector('.text__hashtags');
-const descriptionInput = uploadForm.querySelector('.text__description');
-const hashtagsErrorMessage = uploadForm.querySelector(
+const uploadFormNode = document.querySelector('.img-upload__form');
+const hashtagsNode = uploadFormNode.querySelector('.text__hashtags');
+const descriptionNode = uploadFormNode.querySelector('.text__description');
+const hashtagsErrorMessageNode = uploadFormNode.querySelector(
   '.hashtags__error-message',
 );
-const descriptionErrorMessage = uploadForm.querySelector(
+const descriptionErrorMessageNode = uploadFormNode.querySelector(
   '.description__error-message',
 );
+
+const clearValidationMessages = () => {
+  hashtagsErrorMessageNode.textContent = '';
+  descriptionErrorMessageNode.textContent = '';
+  hashtagsNode.classList.remove('invalid');
+  descriptionNode.classList.remove('invalid');
+};
 
 const onHashtagsOrDescriptionFocus = () => {
   document.removeEventListener('keydown', onEscapeKeydown);
@@ -81,31 +88,32 @@ const validateInput = (inputElement, messageElement, message) => {
 };
 
 const validateHashtags = () => {
-  if (hashtagsInput.value.length === 0) {
+  if (hashtagsNode.value.length === 0) {
     return validateInput(
-      hashtagsInput,
-      descriptionErrorMessage,
-      'valid');
+      hashtagsNode,
+      descriptionErrorMessageNode,
+      'valid',
+    );
   }
 
-  const hashtagsSpilted = hashtagsInput.value
+  const hashtagsSpilted = hashtagsNode.value
     .toLowerCase()
     .replace(/\s+/g, ' ')
     .trim()
     .split(' ');
 
   return validateInput(
-    hashtagsInput,
-    hashtagsErrorMessage,
+    hashtagsNode,
+    hashtagsErrorMessageNode,
     isHashtagsValid(hashtagsSpilted),
   );
 };
 
 const validateDescription = () =>
   validateInput(
-    descriptionInput,
-    descriptionErrorMessage,
-    isDescriptionValid(descriptionInput.value),
+    descriptionNode,
+    descriptionErrorMessageNode,
+    isDescriptionValid(descriptionNode.value),
   );
 
 const onFormSubmit = (evt) => {
@@ -114,38 +122,41 @@ const onFormSubmit = (evt) => {
   const validDescription = validateDescription();
 
   if (validHashtags && validDescription) {
-    hashtagsErrorMessage.classList.add('hidden');
-    descriptionErrorMessage.classList.add('hidden');
+    hashtagsErrorMessageNode.classList.add('hidden');
+    descriptionErrorMessageNode.classList.add('hidden');
+    hashtagsNode.value = hashtagsNode.value.toLowerCase();
     sendForm(
-      new FormData(uploadForm),
+      new FormData(uploadFormNode),
       showLoadingMessage,
       hideLoadingMessage,
       showSuccessMessage,
       showErrorMessage,
     );
   } else {
-    hashtagsErrorMessage.classList.remove('hidden');
-    descriptionErrorMessage.classList.remove('hidden');
+    hashtagsErrorMessageNode.classList.remove('hidden');
+    descriptionErrorMessageNode.classList.remove('hidden');
   }
 };
 
 const onHashtagsInput = () => {
-  hashtagsErrorMessage.classList.add('hidden');
-  descriptionErrorMessage.classList.add('hidden');
+  hashtagsErrorMessageNode.classList.add('hidden');
+  descriptionErrorMessageNode.classList.add('hidden');
   validateHashtags();
 };
 
 const onDescriptionInput = () => {
-  hashtagsErrorMessage.classList.add('hidden');
-  descriptionErrorMessage.classList.add('hidden');
+  hashtagsErrorMessageNode.classList.add('hidden');
+  descriptionErrorMessageNode.classList.add('hidden');
   validateDescription();
 };
 
-uploadForm.addEventListener('submit', onFormSubmit);
-hashtagsInput.addEventListener('input', debounce(onHashtagsInput));
-descriptionInput.addEventListener('input', debounce(onDescriptionInput));
+uploadFormNode.addEventListener('submit', onFormSubmit);
+hashtagsNode.addEventListener('input', debounce(onHashtagsInput));
+descriptionNode.addEventListener('input', debounce(onDescriptionInput));
 
-hashtagsInput.addEventListener('focus', onHashtagsOrDescriptionFocus);
-hashtagsInput.addEventListener('blur', onHashtagsOrDescriptionBlur);
-descriptionInput.addEventListener('focus', onHashtagsOrDescriptionFocus);
-descriptionInput.addEventListener('blur', onHashtagsOrDescriptionBlur);
+hashtagsNode.addEventListener('focus', onHashtagsOrDescriptionFocus);
+hashtagsNode.addEventListener('blur', onHashtagsOrDescriptionBlur);
+descriptionNode.addEventListener('focus', onHashtagsOrDescriptionFocus);
+descriptionNode.addEventListener('blur', onHashtagsOrDescriptionBlur);
+
+export { clearValidationMessages };
