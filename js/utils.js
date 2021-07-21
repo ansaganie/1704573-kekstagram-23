@@ -78,11 +78,18 @@ const isEscapePressed = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const hasDuplicateElements = (array) => new Set(array).size !== array.length;
 
+const destroyElement = (element) => {
+  if (element.parentNode) {
+    element.parentNode.removeChild(element);
+  }
+};
+
 export {
   debounce,
   throttle,
   checkStringLength,
   getRandomPositiveInteger,
   isEscapePressed,
-  hasDuplicateElements
+  hasDuplicateElements,
+  destroyElement
 };

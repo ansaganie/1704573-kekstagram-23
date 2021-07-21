@@ -1,12 +1,6 @@
-import { isEscapePressed } from '../utils.js';
+import { isEscapePressed, destroyElement } from '../utils.js';
 
 const EVENT_HANDLER_OPTIONS = { once: true };
-
-const destroyElement = (element) => {
-  if (element.parentNode) {
-    element.parentNode.removeChild(element);
-  }
-};
 
 const showSuccessMessage = () => {
   const successSection = document
