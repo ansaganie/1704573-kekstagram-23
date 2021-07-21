@@ -1,30 +1,19 @@
-import { isEscapePressed } from '../utils.js';
+import { isEscapePressed, stopPropagation } from '../utils.js';
+import { pictures } from '../api.js';
 import { drawPictures } from './pictures.js';
-import { picturesJson } from '../api.js';
-
-const SHOWN_COMMENTS_COUNT_DEFAULT = 5;
-
-const commentTemplate = {
-  id: 100000,
-  avatar: 'img/avatar-6.svg',
-  name: 'Степан',
-  message: '',
-};
+import {
+  proccessComments,
+  onFooterButtonClick,
+  onFooterEnterKeydown,
+  onLoaderClick,
+  footerButtonNode,
+  loaderButtonNode
+} from './comments.js';
 
 const bigPictureNode = document.querySelector('.big-picture');
-const socialCommentNode = bigPictureNode
-  .querySelector('.social__comment')
-  .cloneNode(true);
-const loaderNodeButton = bigPictureNode.querySelector(
-  '.social__comments-loader',
-);
-const socialCommentsNode = bigPictureNode.querySelector('.social__comments');
-const commentsCountNode = bigPictureNode.querySelector('.comments-count');
-const commentsCountShownNode = bigPictureNode.querySelector(
-  '.comments-count__shown',
-);
-const footerNodeButton = bigPictureNode.querySelector('.social__footer-btn');
-const footerTextNode = bigPictureNode.querySelector('.social__footer-text');
+const img = bigPictureNode
+  .querySelector('.big-picture__img')
+  .querySelector('img');
 
 const hideModal = () => {
   bigPictureNode.classList.add('hidden');
@@ -34,8 +23,11 @@ const hideModal = () => {
   const activeFilter = document.querySelector(
     '.img-filters__button--active',
   ).id;
-  drawPictures(picturesJson, activeFilter);
+  drawPictures(pictures, activeFilter);
   document.body.classList.remove('modal-open');
+  footerButtonNode.removeEventListener('click', onFooterButtonClick);
+  document.removeEventListener('keydown', onFooterEnterKeydown);
+  loaderButtonNode.removeEventListener('click', onLoaderClick);
 };
 
 const onEscKeydown = (evt) => {
@@ -67,86 +59,7 @@ const showModal = () => {
   document.addEventListener('keydown', onEscKeydown);
 };
 
-const showComments = (comments, from, to) => {
-  if (comments.length === to) {
-    loaderNodeButton.classList.add('hidden');
-  } else {
-    loaderNodeButton.classList.remove('hidden');
-  }
-
-  const fragment = document.createDocumentFragment();
-
-  comments.slice(from, to).forEach(({ avatar, message, name }) => {
-    const newComment = socialCommentNode.cloneNode(true);
-    const img = newComment.querySelector('img');
-    img.src = avatar;
-    img.alt = name;
-    newComment.querySelector('.social__text').textContent = message;
-
-    fragment.append(newComment);
-  });
-
-  socialCommentsNode.appendChild(fragment);
-};
-
-const updateCommentCount = (shown, max) => {
-  commentsCountShownNode.textContent = shown;
-  commentsCountNode.textContent = max;
-};
-
-const showNextFiveComments = (comments) => {
-  const commentsLength = comments.length;
-  const currentCount = +commentsCountShownNode.textContent;
-  const toShow = Math.min(currentCount + 5, commentsLength);
-  showComments(comments, currentCount, toShow);
-  updateCommentCount(toShow, commentsLength);
-};
-
-const showRestComments = (comments) => {
-  const commentsLength = comments.length;
-  const currentCount = +commentsCountShownNode.textContent;
-  showComments(comments, currentCount, commentsLength);
-  updateCommentCount(commentsLength, commentsLength);
-};
-
-
-const addNewComment = (comments) => {
-  commentTemplate.id++;
-  const newComment = { ...commentTemplate };
-  newComment.message = footerTextNode.value;
-  comments.push(newComment);
-  showRestComments(comments);
-  footerTextNode.value = '';
-};
-
-const proccessComments = (comments) => {
-  socialCommentsNode.innerHTML = '';
-  const commentsLength = comments.length;
-  const countOfCommentsToShow = Math.min(
-    SHOWN_COMMENTS_COUNT_DEFAULT,
-    commentsLength,
-  );
-
-  showComments(comments, 0, countOfCommentsToShow);
-  updateCommentCount(countOfCommentsToShow, commentsLength);
-
-  const onLoaderClick = (evt) => {
-    evt.preventDefault();
-    showNextFiveComments(comments);
-  };
-
-  const onFooterButtonClick = () => {
-    addNewComment(comments);
-  };
-
-  footerNodeButton.onclick = onFooterButtonClick;
-  loaderNodeButton.onclick = onLoaderClick;
-};
-
 const showBigPicture = ({ url, likes, comments, description }) => {
-  const img = bigPictureNode
-    .querySelector('.big-picture__img')
-    .querySelector('img');
   img.src = url;
   img.alt = description;
 
@@ -165,6 +78,6 @@ bigPictureNode.addEventListener('click', onBigPictureClick);
 
 bigPictureNode
   .querySelector('.big-picture__preview')
-  .addEventListener('click', (evt) => evt.stopPropagation());
+  .addEventListener('click', stopPropagation);
 
 export { showBigPicture };
