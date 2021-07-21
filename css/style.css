@@ -1419,3 +1419,11 @@ main {
 .hidden {
   display: none;
 }
+
+.invalid {
+  border: rgb(214, 78, 78) 3px solid
+}
+
+.error-message {
+  color: rgb(214, 78, 78);
+}

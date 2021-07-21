@@ -1,7 +1,12 @@
 import { onEscapeKeydown } from './picture-edit.js';
 import { debounce, hasDuplicateElements } from '../utils.js';
 import { sendForm } from '../api.js';
-import { hideLoadingMessage, showErrorMessage, showLoadingMessage, showSuccessMessage } from './success-error.js';
+import {
+  hideLoadingMessage,
+  showErrorMessage,
+  showLoadingMessage,
+  showSuccessMessage
+} from './success-error.js';
 
 const HASHTAG_MAX_LENGTH = 20;
 const HASHTAG_MAX_COUNT = 5;
@@ -10,6 +15,12 @@ const HASHTAG_PATTERN = /^#[a-zа-я0-9]{1,19}$/;
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagsInput = uploadForm.querySelector('.text__hashtags');
 const descriptionInput = uploadForm.querySelector('.text__description');
+const hashtagsErrorMessage = uploadForm.querySelector(
+  '.hashtags__error-message',
+);
+const descriptionErrorMessage = uploadForm.querySelector(
+  '.description__error-message',
+);
 
 const onHashtagsOrDescriptionFocus = () => {
   document.removeEventListener('keydown', onEscapeKeydown);
@@ -57,23 +68,24 @@ const isDescriptionValid = (input) => {
   return 'valid';
 };
 
-const validateInput = (element, message) => {
+const validateInput = (inputElement, messageElement, message) => {
   if (message !== 'valid') {
-    element.setCustomValidity(message);
-    element.reportValidity();
-
+    messageElement.textContent = message;
+    inputElement.classList.add('invalid');
     return false;
   } else {
-    element.setCustomValidity('');
-    element.reportValidity();
-
+    messageElement.textContent = '';
+    inputElement.classList.remove('invalid');
     return true;
   }
 };
 
 const validateHashtags = () => {
   if (hashtagsInput.value.length === 0) {
-    return validateInput(hashtagsInput, 'valid');
+    return validateInput(
+      hashtagsInput,
+      descriptionErrorMessage,
+      'valid');
   }
 
   const hashtagsSpilted = hashtagsInput.value
@@ -81,11 +93,20 @@ const validateHashtags = () => {
     .replace(/\s+/g, ' ')
     .trim()
     .split(' ');
-  return validateInput(hashtagsInput, isHashtagsValid(hashtagsSpilted));
+
+  return validateInput(
+    hashtagsInput,
+    hashtagsErrorMessage,
+    isHashtagsValid(hashtagsSpilted),
+  );
 };
 
 const validateDescription = () =>
-  validateInput(descriptionInput, isDescriptionValid(descriptionInput.value));
+  validateInput(
+    descriptionInput,
+    descriptionErrorMessage,
+    isDescriptionValid(descriptionInput.value),
+  );
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
@@ -93,6 +114,8 @@ const onFormSubmit = (evt) => {
   const validDescription = validateDescription();
 
   if (validHashtags && validDescription) {
+    hashtagsErrorMessage.classList.add('hidden');
+    descriptionErrorMessage.classList.add('hidden');
     sendForm(
       new FormData(uploadForm),
       showLoadingMessage,
@@ -100,21 +123,29 @@ const onFormSubmit = (evt) => {
       showSuccessMessage,
       showErrorMessage,
     );
+  } else {
+    hashtagsErrorMessage.classList.remove('hidden');
+    descriptionErrorMessage.classList.remove('hidden');
   }
 };
 
 const onHashtagsInput = () => {
+  hashtagsErrorMessage.classList.add('hidden');
+  descriptionErrorMessage.classList.add('hidden');
   validateHashtags();
 };
 
 const onDescriptionInput = () => {
+  hashtagsErrorMessage.classList.add('hidden');
+  descriptionErrorMessage.classList.add('hidden');
   validateDescription();
 };
+
+uploadForm.addEventListener('submit', onFormSubmit);
+hashtagsInput.addEventListener('input', debounce(onHashtagsInput));
+descriptionInput.addEventListener('input', debounce(onDescriptionInput));
 
 hashtagsInput.addEventListener('focus', onHashtagsOrDescriptionFocus);
 hashtagsInput.addEventListener('blur', onHashtagsOrDescriptionBlur);
 descriptionInput.addEventListener('focus', onHashtagsOrDescriptionFocus);
 descriptionInput.addEventListener('blur', onHashtagsOrDescriptionBlur);
-uploadForm.addEventListener('submit', onFormSubmit);
-hashtagsInput.addEventListener('input', debounce(onHashtagsInput));
-descriptionInput.addEventListener('input', debounce(onDescriptionInput));
