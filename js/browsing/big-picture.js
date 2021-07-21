@@ -3,9 +3,6 @@ import { drawPictures } from './pictures.js';
 import { picturesJson } from '../api.js';
 
 const SHOWN_COMMENTS_COUNT_DEFAULT = 5;
-const EVENT_ONCE = {
-  once: true,
-};
 
 const commentTemplate = {
   id: 100000,
@@ -97,12 +94,21 @@ const updateCommentCount = (shown, max) => {
   commentsCountNode.textContent = max;
 };
 
+const showNextFiveComments = (comments) => {
+  const commentsLength = comments.length;
+  const currentCount = +commentsCountShownNode.textContent;
+  const toShow = Math.min(currentCount + 5, commentsLength);
+  showComments(comments, currentCount, toShow);
+  updateCommentCount(toShow, commentsLength);
+};
+
 const showRestComments = (comments) => {
   const commentsLength = comments.length;
-  const currentShownCommentsCount = +commentsCountShownNode.textContent;
-  showComments(comments, currentShownCommentsCount, commentsLength);
+  const currentCount = +commentsCountShownNode.textContent;
+  showComments(comments, currentCount, commentsLength);
   updateCommentCount(commentsLength, commentsLength);
 };
+
 
 const addNewComment = (comments) => {
   commentTemplate.id++;
@@ -126,7 +132,7 @@ const proccessComments = (comments) => {
 
   const onLoaderClick = (evt) => {
     evt.preventDefault();
-    showRestComments(comments);
+    showNextFiveComments(comments);
   };
 
   const onFooterButtonClick = () => {
@@ -134,7 +140,7 @@ const proccessComments = (comments) => {
   };
 
   footerNodeButton.onclick = onFooterButtonClick;
-  loaderNodeButton.addEventListener('click', onLoaderClick, EVENT_ONCE);
+  loaderNodeButton.onclick = onLoaderClick;
 };
 
 const showBigPicture = ({ url, likes, comments, description }) => {
