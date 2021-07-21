@@ -19,7 +19,14 @@ fetch(MAIN_LINK + api.get)
     showImgUploadTitle();
   });
 
-const sendForm = (formData, showSuccessMessage, showErrorMessage) => {
+const sendForm = (
+  formData,
+  showLoadingMessage,
+  hideLoadingMessage,
+  showSuccessMessage,
+  showErrorMessage,
+) => {
+  showLoadingMessage();
   fetch(
     MAIN_LINK + api.post,
     {
@@ -28,12 +35,18 @@ const sendForm = (formData, showSuccessMessage, showErrorMessage) => {
       body: formData,
     },
   ).then((response) => {
+    hideLoadingMessage();
     if (response.ok) {
-      showSuccessMessage();
       closeImgEditModal();
+      showSuccessMessage();
     } else {
+      closeImgEditModal();
       showErrorMessage();
     }
+  }).catch(() => {
+    hideLoadingMessage();
+    closeImgEditModal();
+    showErrorMessage();
   });
 };
 
