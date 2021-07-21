@@ -4,4 +4,4 @@ import './browsing/pictures.js';
 import './browsing/filter.js';
 import './editing/effects.js';
 import './editing/scale.js';
-import './editing/validation.js';
+import './editing/form.js';

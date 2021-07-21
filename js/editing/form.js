@@ -1,6 +1,7 @@
 import { onEscapeKeydown } from './picture-edit.js';
 import { debounce, hasDuplicateElements } from '../utils.js';
 import { sendForm } from '../api.js';
+import { hideLoadingMessage, showErrorMessage, showLoadingMessage, showSuccessMessage } from './success-error.js';
 
 const HASHTAG_MAX_LENGTH = 20;
 const HASHTAG_MAX_COUNT = 5;
@@ -92,7 +93,13 @@ const onFormSubmit = (evt) => {
   const validDescription = validateDescription();
 
   if (validHashtags && validDescription) {
-    sendForm(new FormData(uploadForm));
+    sendForm(
+      new FormData(uploadForm),
+      showLoadingMessage,
+      hideLoadingMessage,
+      showSuccessMessage,
+      showErrorMessage,
+    );
   }
 };
 
