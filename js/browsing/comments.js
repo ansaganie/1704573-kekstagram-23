@@ -122,6 +122,6 @@ export {
   onFooterButtonClick,
   onFooterEnterKeydown,
   onLoaderClick,
-  loaderButtonNode as loaderNodeButton,
-  footerButtonNode as footerNodeButton
+  loaderButtonNode,
+  footerButtonNode
 };
