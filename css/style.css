@@ -1427,3 +1427,28 @@ main {
 .error-message {
   color: rgb(214, 78, 78);
 }
+
+.alert-danger {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  padding: 1px 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.alert-danger__close-button {
+  margin-left: 14px;
+  margin-top: 14px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.alert-danger__close-button:hover {
+  color: black;
+}
