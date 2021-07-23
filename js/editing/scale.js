@@ -12,7 +12,7 @@ const onBiggerClick = () => {
   let currentValue = +valueNode.value.replace('%', '');
   if (currentValue < SCALE_MAX) {
     currentValue += SCALE_STEP;
-    valueNode.value = currentValue;
+    valueNode.value = `${currentValue}%`;
     imgPreview.style.transform = `scale(${currentValue / SCALE_MAX})`;
   }
 };
@@ -21,7 +21,7 @@ const onSmallerClick = () => {
   let currentValue = +valueNode.value.replace('%', '');
   if (currentValue > SCALE_MIN) {
     currentValue -= SCALE_STEP;
-    valueNode.value = currentValue;
+    valueNode.value = `${currentValue}%`;
     imgPreview.style.transform = `scale(${currentValue / SCALE_MAX})`;
   }
 };
