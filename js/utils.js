@@ -60,14 +60,11 @@ const destroyElement = (element) => {
   }
 };
 
-const stopPropagation = (evt) => evt.stopPropagation();
-
 export {
   debounce,
   getRandomPositiveInteger,
   isEscapePressed,
   isEnterPressed,
   hasDuplicateElements,
-  destroyElement,
-  stopPropagation
+  destroyElement
 };
