@@ -9,19 +9,19 @@ const smallerButtonNode = document.querySelector('.scale__control--smaller');
 const valueNode = document.querySelector('.scale__control--value');
 
 const onBiggerClick = () => {
-  let currentValue = parseInt(valueNode.value.slice(0, valueNode.value.length-1), 10);
-  if (currentValue !== SCALE_MAX) {
+  let currentValue = +valueNode.value.replace('%', '');
+  if (currentValue < SCALE_MAX) {
     currentValue += SCALE_STEP;
-    valueNode.value = `${currentValue}%`;
+    valueNode.value = currentValue;
     imgPreview.style.transform = `scale(${currentValue / SCALE_MAX})`;
   }
 };
 
 const onSmallerClick = () => {
-  let currentValue = parseInt(valueNode.value.slice(0, valueNode.value.length-1), 10);
-  if (currentValue !== SCALE_MIN) {
+  let currentValue = +valueNode.value.replace('%', '');
+  if (currentValue > SCALE_MIN) {
     currentValue -= SCALE_STEP;
-    valueNode.value = `${currentValue}%`;
+    valueNode.value = currentValue;
     imgPreview.style.transform = `scale(${currentValue / SCALE_MAX})`;
   }
 };
