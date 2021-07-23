@@ -1,4 +1,4 @@
-import { isEscapePressed, stopPropagation } from '../utils.js';
+import { isEscapePressed } from '../utils.js';
 import { pictures } from '../api.js';
 import { drawPictures } from './pictures.js';
 import {
@@ -70,6 +70,10 @@ const showBigPicture = ({ url, likes, comments, description }) => {
   showModal();
 };
 
+const onBigPicturePreviewClick = ( evt ) => {
+  evt.stopPropagation();
+};
+
 bigPictureNode
   .querySelector('.big-picture__cancel')
   .addEventListener('click', onCancelButtonClick);
@@ -78,6 +82,6 @@ bigPictureNode.addEventListener('click', onBigPictureClick);
 
 bigPictureNode
   .querySelector('.big-picture__preview')
-  .addEventListener('click', stopPropagation);
+  .addEventListener('click', onBigPicturePreviewClick);
 
 export { showBigPicture };
